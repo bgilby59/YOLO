@@ -5,6 +5,8 @@ NUM_CLASSES = 20
 IMG_HEIGHT = 280
 IMG_WIDTH = 280
 
+IOU_THRESHOLD = 0.5
+
 
 VOC_CLASSES = {
     "aeroplane": 0,

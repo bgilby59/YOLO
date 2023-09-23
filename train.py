@@ -91,7 +91,7 @@ dataset = torchvision.datasets.voc.VOCDetection(
     "VOC2012", "2012", "train", transforms=voc_transform
 )
 dataloader = torch.utils.data.DataLoader(
-    dataset, batch_size=batch_size, shuffle=False  # , collate_fn=coco_collate
+    dataset, batch_size=batch_size, shuffle=True  # , collate_fn=coco_collate
 )
 print(len(dataloader))
 

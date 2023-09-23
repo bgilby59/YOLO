@@ -1,6 +1,9 @@
-from global_constants import IMG_WIDTH, IMG_HEIGHT, VOC_CLASSES
+from global_constants import IMG_WIDTH, IMG_HEIGHT, VOC_CLASSES, GRID_HEIGHT, GRID_WIDTH
 from torchvision import transforms
 from visualize import visualize_imgs
+
+CELL_HEIGHT = IMG_HEIGHT / GRID_HEIGHT
+CELL_WIDTH = IMG_WIDTH / GRID_WIDTH
 
 
 # calculate iou
@@ -72,3 +75,18 @@ def coco_collate(batch):
 
 def labels_to_dev(labels, dev="cuda"):
     return False
+
+
+# Bounding boxes are outputted as values between [0,1] by model, need to convert back to image space
+def output_box_to_pred(bbox, row, col):
+    grid_x = col * CELL_WIDTH
+    grid_y = row * CELL_HEIGHT
+    pred_w = bbox[2] * IMG_WIDTH
+    pred_h = bbox[3] * IMG_HEIGHT
+    pred_center_x = grid_x + bbox[0] * CELL_WIDTH
+    pred_center_y = grid_y + bbox[1] * CELL_HEIGHT
+    # go from center of bbox to up left coordinate
+    pred_x = pred_center_x - (pred_w / 2)
+    pred_y = pred_center_y - (pred_h / 2)
+
+    return [pred_x, pred_y, pred_w, pred_h]
